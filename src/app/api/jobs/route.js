@@ -1,9 +1,10 @@
-import { connectToDB } from "@/utils/database";
-import Job from "@/models/job";
+import clientPromise from "@/lib/mongodb";
 
 export const GET = async (request) => {
   try {
-    await connectToDB();
+    const client = await clientPromise;
+    const db = client.db("cleanmyride");
+    const Job = db.collection("jobs");
 
     const jobs = await Job.find({})
       .populate("freelancerAssign", "name contactNumber")
